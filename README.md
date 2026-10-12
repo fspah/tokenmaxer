@@ -4,6 +4,10 @@ Manage multiple Claude Code accounts from a local dashboard. Save each login onc
 
 Requires **macOS**, **Node.js 20+**, and **Claude Code**.
 
+![TokenMaxer dashboard showing usage for three saved accounts](docs/screenshots/dashboard.png)
+
+*Screenshots use demo accounts.*
+
 ## Installation
 
 ```sh
@@ -41,6 +45,13 @@ Or click **Use account** in the dashboard.
 ### Automatic switching
 
 While the dashboard runs, TokenMaxer checks usage every minute. At **95% usage**, it switches to the saved account with the most available capacity. Change the threshold or turn switching off in the dashboard.
+
+<details>
+<summary>See automatic switching in action</summary>
+
+![TokenMaxer activating the backup account after the usage threshold is reached](docs/screenshots/automatic-switch.png)
+
+</details>
 
 To start the monitor automatically at login:
 
