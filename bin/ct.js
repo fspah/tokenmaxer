@@ -9,7 +9,7 @@ import * as claude from '../src/claude.js';
 import * as vault from '../src/vault.js';
 import { serve } from '../src/server.js';
 
-const help = `Claude Control Tower (macOS, Node 20+)
+const help = `TokenMaxer (macOS, Node 20+)
 
   ct serve [--port 4317] [--no-monitor]  Open local dashboard and monitor usage
   ct capture <name>                    Save the current Claude login in Keychain
@@ -105,7 +105,7 @@ async function main() {
       }
       if (!Number.isInteger(port) || port < 1 || port > 65535) throw new Error('Port must be between 1 and 65535.');
       const server = await serve({ port, monitor });
-      console.log(`Claude Control Tower: http://127.0.0.1:${server.address().port}`);
+      console.log(`TokenMaxer: http://127.0.0.1:${server.address().port}`);
       for (const signal of ['SIGINT', 'SIGTERM']) process.once(signal, () => { server.close(); server.closeIdleConnections(); });
       break;
     }
@@ -131,4 +131,4 @@ async function main() {
   }
 }
 
-main().catch((err) => { console.error(`Control Tower: ${err.message}`); process.exitCode = 1; });
+main().catch((err) => { console.error(`TokenMaxer: ${err.message}`); process.exitCode = 1; });

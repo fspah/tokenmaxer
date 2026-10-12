@@ -1,14 +1,16 @@
-# Claude Control Tower
+# TokenMaxer
 
 A local macOS dashboard and CLI for saving Claude Code subscription accounts, checking their usage and automatically activating an account with available capacity. Credentials stay in macOS Keychain. You log in once for each new account, then reuse its saved login while it remains valid.
+
+The CLI command is `ct`. Storage, environment variables and the LaunchAgent retain their original Claude Control Tower names for compatibility with existing saved accounts.
 
 ## Start
 
 Requires macOS, Node.js 20 or later, and Claude Code on your `PATH`. Tested against Claude Code **2.1.296**.
 
 ```sh
-git clone git@github.com:fspah/claude-control-tower.git
-cd claude-control-tower
+git clone git@github.com:fspah/tokenmaxer.git
+cd tokenmaxer
 npm ci
 npm start
 ```
@@ -50,7 +52,7 @@ Five-hour, weekly, model-specific weekly and model-scoped limits all count. Fail
 
 `ct poll` performs one check and applies the same switching rules. `ct run` checks first, then launches Claude with your arguments. It does not start a background monitor; keep the dashboard server or login daemon running for checks during a session.
 
-Switching changes Claude Code's stored credentials and identity for the selected config directory. Existing Claude processes may cache credentials. If an open session still reports the old account or limit, exit it and use `claude --continue` in the same project, or `claude --resume` to choose a conversation. Control Tower does not interrupt an active turn or replay prompts.
+Switching changes Claude Code's stored credentials and identity for the selected config directory. Existing Claude processes may cache credentials. If an open session still reports the old account or limit, exit it and use `claude --continue` in the same project, or `claude --resume` to choose a conversation. TokenMaxer does not interrupt an active turn or replay prompts.
 
 ## Run at login
 

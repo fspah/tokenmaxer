@@ -77,7 +77,7 @@ test('empty dashboard, accessibility labels, mobile layout and browser errors', 
   const errors = [];
   page.on('pageerror', (err) => errors.push(err.message));
   await page.goto(tower.url);
-  await expect(page).toHaveTitle('Claude Control Tower');
+  await expect(page).toHaveTitle('TokenMaxer');
   await expect(page.getByText('No saved accounts yet.')).toBeVisible();
   await expect(page.getByText('Monitor paused', { exact: false })).toBeVisible();
   await page.setViewportSize({ width: 390, height: 844 });

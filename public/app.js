@@ -30,7 +30,7 @@ async function load() {
   $('capture').querySelector('button').disabled = pending;
   $('settings').querySelector('button').disabled = pending;
   const warnings = [];
-  if (state.overrides.length) warnings.push(`Switching is blocked by these credential overrides: ${state.overrides.join(', ')}. Unset them and restart Control Tower.`);
+  if (state.overrides.length) warnings.push(`Switching is blocked by these credential overrides: ${state.overrides.join(', ')}. Unset them and restart TokenMaxer.`);
   if (state.monitorError) warnings.push(state.monitorError);
   if (state.credentialError) warnings.push(state.credentialError);
   if (state.accounts.length && !state.accounts.some((account) => account.key === state.active)) warnings.push('Your current Claude login is not saved. Save it below to enable automatic switching.');

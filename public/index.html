@@ -3,13 +3,13 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Claude Control Tower</title>
+  <title>TokenMaxer</title>
   <link rel="stylesheet" href="/style.css">
   <script src="/app.js" defer></script>
 </head>
 <body>
   <main>
-    <header><div><p class="eyebrow">LOCAL ACCOUNT MANAGER</p><h1>Claude Control Tower<span class="dot"></span></h1><p class="subtitle">Your accounts. One place. Keep working.</p></div><button id="refresh" disabled>Check usage</button></header>
+    <header><div><p class="eyebrow">LOCAL ACCOUNT MANAGER</p><h1>TokenMaxer<span class="dot"></span></h1><p class="subtitle">Your accounts. One place. Keep working.</p></div><button id="refresh" disabled>Check usage</button></header>
     <div id="message" role="status" hidden></div>
     <div id="warning" class="notice" hidden></div>
     <section class="settings"><div><h2>Automatic switching</h2><p id="monitor-status">Loading monitor…</p></div><form id="settings"><label class="toggle"><input id="auto" type="checkbox"> Enabled</label><label>Switch at <input id="threshold" type="number" min="1" max="100" value="95" required> %</label><button type="submit" class="secondary" disabled>Save settings</button></form></section>
