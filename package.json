@@ -1,0 +1,14 @@
+{
+  "name": "claude-control-tower",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Local Claude Code account vault, usage monitor and switcher for macOS",
+  "bin": { "ct": "bin/ct.js" },
+  "scripts": {
+    "start": "node bin/ct.js serve",
+    "test": "playwright test"
+  },
+  "engines": { "node": ">=20" },
+  "devDependencies": { "@playwright/test": "1.64.0" }
+}

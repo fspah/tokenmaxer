@@ -1,0 +1,12 @@
+node_modules/
+test-results/
+playwright-report/
+.DS_Store
+.env
+.env.*
+.claude/
+.claude-control-tower/
+state.json
+events.jsonl
+daemon.log
+claude-config.backup.json

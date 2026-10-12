@@ -1,0 +1,24 @@
+#!/usr/bin/env node
+// Test-only Keychain. The fixture prepends this directory to its child process PATH.
+import fs from 'node:fs';
+let store = {};
+try { store = JSON.parse(fs.readFileSync(process.env.CT_TEST_KEYCHAIN, 'utf8')); } catch {}
+if (store.locked) process.exit(36);
+const args = process.argv.slice(2);
+const arg = (name) => args[args.indexOf(name) + 1];
+const key = `${arg('-s')}|${arg('-a')}`;
+const save = () => fs.writeFileSync(process.env.CT_TEST_KEYCHAIN, JSON.stringify(store));
+if (args[0] === 'find-generic-password') {
+  if (!(key in store)) process.exit(44);
+  process.stdout.write(`${store[key]}\n`);
+} else if (args[0] === 'delete-generic-password') {
+  if (!(key in store)) process.exit(44);
+  delete store[key]; save();
+} else if (args[0] === '-i') {
+  let input = '';
+  for await (const chunk of process.stdin) input += chunk;
+  const match = input.match(/-a "([^"]+)" -s "([^"]+)" -([Xw]) "((?:\\.|[^"\\])*)"/);
+  if (!match) process.exit(1);
+  store[`${match[2]}|${match[1]}`] = match[3] === 'X' ? Buffer.from(match[4], 'hex').toString('utf8') : JSON.parse(`"${match[4]}"`);
+  save();
+} else process.exit(1);

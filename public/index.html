@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Claude Control Tower</title>
+  <link rel="stylesheet" href="/style.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <main>
+    <header><div><p class="eyebrow">LOCAL ACCOUNT MANAGER</p><h1>Claude Control Tower<span class="dot"></span></h1><p class="subtitle">Your accounts. One place. Keep working.</p></div><button id="refresh" disabled>Check usage</button></header>
+    <div id="message" role="status" hidden></div>
+    <div id="warning" class="notice" hidden></div>
+    <section class="settings"><div><h2>Automatic switching</h2><p id="monitor-status">Loading monitor…</p></div><form id="settings"><label class="toggle"><input id="auto" type="checkbox"> Enabled</label><label>Switch at <input id="threshold" type="number" min="1" max="100" value="95" required> %</label><button type="submit" class="secondary" disabled>Save settings</button></form></section>
+    <section><div class="section-heading"><h2>Saved accounts <span id="count"></span></h2><span class="muted">Credentials stored in macOS Keychain</span></div><div id="accounts" class="accounts"><p>Loading accounts…</p></div></section>
+    <section class="add"><div><h2>Add an account</h2><p>Save your current Claude Code login, or log in to another account once from your terminal.</p></div><form id="capture"><label for="label">Account name</label><div class="input-row"><input id="label" placeholder="e.g. Personal Max" maxlength="80" required><button type="submit" disabled>Save current login</button></div></form><p class="muted">For another account: <code>ct login "Work"</code>. This leaves your current login in place.</p></section>
+    <section><h2>Recent activity</h2><ul id="events" class="events"></ul></section>
+    <footer>Usage is checked every minute while the monitor runs. All usage windows count toward the threshold.<br>After a switch, an existing Claude session may need <code>claude --continue</code> to pick up the account.</footer>
+  </main>
+</body>
+</html>

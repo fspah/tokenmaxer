@@ -1,0 +1,13 @@
+#!/usr/bin/env node
+import fs from 'node:fs/promises';
+import { join } from 'node:path';
+import { writeLiveItem } from '../../src/claude.js';
+const args = process.argv.slice(2);
+if (args[0] === 'auth' && args[1] === 'login') {
+  await fs.writeFile(join(process.env.CLAUDE_CONFIG_DIR, '.claude.json'), JSON.stringify({ oauthAccount: { accountUuid: 'login', organizationUuid: 'org-login' } }));
+  await writeLiveItem({ claudeAiOauth: { accessToken: 'access-login', refreshToken: 'refresh-login', expiresAt: Date.now() + 3600000, scopes: ['user:profile', 'user:inference'], subscriptionType: 'max' } });
+  console.log('Test Claude login completed.');
+} else {
+  await fs.writeFile(join(process.env.CT_HOME, 'claude-run.json'), JSON.stringify(args));
+  console.log('Test Claude started.');
+}
