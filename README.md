@@ -84,4 +84,4 @@ npx playwright install chromium
 npm test
 ```
 
-22 Playwright tests cover switching, usage, token refresh, and failure recovery.
+25 Playwright tests cover switching, usage, model limits, token refresh, and failure recovery.

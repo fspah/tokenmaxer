@@ -17,7 +17,10 @@ function labelValue(label) {
 export function usageWindows(usage) {
   if (!usage || typeof usage !== 'object') return [];
   return Object.entries(usage).filter(([name]) => name === 'five_hour' || name.startsWith('seven_day')).map(([name, value]) => ({ name, ...value }))
-    .concat((usage.model_scoped ?? []).map((value) => ({ ...value, name: value.display_name || value.model })))
+    .concat((usage.model_scoped ?? []).map((value) => ({ ...value, name: `Weekly ${value.display_name || value.model}` })))
+    .concat((Array.isArray(usage.limits) ? usage.limits : [])
+      .filter((value) => value?.kind === 'weekly_scoped' && typeof value.scope?.model?.display_name === 'string')
+      .map((value) => ({ name: `Weekly ${value.scope.model.display_name}`, utilization: value.percent, resets_at: value.resets_at })))
     .filter((value) => Number.isFinite(value.utilization));
 }
 

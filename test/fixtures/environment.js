@@ -88,7 +88,7 @@ const mock = http.createServer(async (req, res) => {
     if (entry.unauthorized && !token.includes(':renewed')) return json(401, { error: 'unauthorized' });
     if (entry.malformedUsage) return json(200, {});
     const resets_at = new Date(Date.now() + 3600000).toISOString();
-    return json(200, { five_hour: { utilization: entry.five, resets_at }, seven_day: { utilization: entry.week, resets_at }, seven_day_sonnet: { utilization: entry.sonnet, resets_at }, ...(entry.scoped !== undefined ? { model_scoped: [{ display_name: 'Opus', utilization: entry.scoped, resets_at }] } : {}) });
+    return json(200, { five_hour: { utilization: entry.five, resets_at }, seven_day: { utilization: entry.week, resets_at }, seven_day_sonnet: entry.sonnet === null ? null : { utilization: entry.sonnet, resets_at }, ...(entry.scoped !== undefined ? { model_scoped: [{ display_name: 'Opus', utilization: entry.scoped, resets_at }] } : {}), ...(entry.limits !== undefined ? { limits: entry.limits } : {}) });
   }
   json(404, { error: 'not found' });
 });

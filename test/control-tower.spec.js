@@ -73,6 +73,12 @@ async function poll(page) {
   await expect(page.getByRole('status')).toHaveText('Usage checked.');
 }
 
+const modelLimit = (name, percent) => ({
+  kind: 'weekly_scoped', group: 'weekly', percent,
+  resets_at: new Date(Date.now() + 3600000).toISOString(),
+  scope: { model: { id: null, display_name: name }, surface: null }, is_active: false,
+});
+
 test('empty dashboard, accessibility labels, mobile layout and browser errors', async ({ page, tower }) => {
   const errors = [];
   page.on('pageerror', (err) => errors.push(err.message));
@@ -129,6 +135,36 @@ test('automatically selects lowest usage across all windows and switches again a
   await poll(page);
   await expect(card(page, 'alpha').getByText('ACTIVE')).toBeVisible();
   await page.screenshot({ path: join('test-results', 'accounts-desktop.png'), fullPage: true });
+});
+
+test('API model limits display Fable and other supplied names without an empty Sonnet row', async ({ page, tower }) => {
+  await capture(page, tower, 'alpha');
+  await tower.control({ accounts: { alpha: { sonnet: null, limits: [modelLimit('Fable', 0), modelLimit('Mythos', 17)] } } });
+  await poll(page);
+  await expect(card(page, 'alpha').getByText('Weekly Fable', { exact: true })).toBeVisible();
+  await expect(card(page, 'alpha').getByRole('progressbar', { name: 'alpha: Weekly Fable', exact: true })).toHaveAttribute('value', '0');
+  await expect(card(page, 'alpha').getByText('Weekly Mythos', { exact: true })).toBeVisible();
+  await expect(card(page, 'alpha').getByText('Weekly Sonnet', { exact: true })).toHaveCount(0);
+});
+
+test('a high weekly Fable limit triggers switching even when total usage is low', async ({ page, tower }) => {
+  await capture(page, tower, 'alpha');
+  await capture(page, tower, 'beta');
+  await tower.control({ live: { id: 'alpha' }, accounts: { alpha: { five: 10, week: 20, sonnet: null, limits: [modelLimit('Fable', 98)] }, beta: { sonnet: null, limits: [modelLimit('Fable', 5)] } } });
+  await poll(page);
+  await expect(card(page, 'beta').getByText('ACTIVE', { exact: true })).toBeVisible();
+  await expect(card(page, 'alpha').getByText('Weekly Fable', { exact: true })).toBeVisible();
+  expect((await tower.inspect()).config.oauthAccount.accountUuid).toBe('beta');
+});
+
+test('automatic selection excludes a backup whose weekly Fable limit is exhausted', async ({ page, tower }) => {
+  await capture(page, tower, 'alpha');
+  await capture(page, tower, 'beta');
+  await capture(page, tower, 'gamma');
+  await tower.control({ live: { id: 'alpha' }, accounts: { alpha: { five: 96, sonnet: null }, beta: { five: 0, week: 0, sonnet: null, limits: [modelLimit('Fable', 99)] }, gamma: { five: 0, week: 0, sonnet: null, limits: [modelLimit('Fable', 20)] } } });
+  await poll(page);
+  await expect(card(page, 'gamma').getByText('ACTIVE', { exact: true })).toBeVisible();
+  expect((await tower.inspect()).config.oauthAccount.accountUuid).toBe('gamma');
 });
 
 test('settings survive reload and disabled switching stays on the current account', async ({ page, tower }) => {
